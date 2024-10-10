@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,6 +11,11 @@ plugins {
 }
 
 android {
+
+    val propertiesFiles = rootProject.file("apikey.properties")
+    val apiProperties = Properties()
+    apiProperties.load(FileInputStream(propertiesFiles))
+
     namespace = "com.example.musicplayer"
     compileSdk = 34
 
@@ -19,6 +27,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "OPENAI_KEY", apiProperties.getProperty("OPENAI_KEY", ""))
     }
 
     buildTypes {
@@ -27,6 +37,10 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+    buildFeatures {
+        buildConfig=true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

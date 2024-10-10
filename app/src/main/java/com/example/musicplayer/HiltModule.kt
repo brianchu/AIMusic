@@ -1,6 +1,8 @@
 package com.example.musicplayer
 
 import android.content.Context
+import com.example.musicplayer.data.MusicManager
+import com.example.musicplayer.data.SpotifyManager
 import com.example.musicplayer.util.ConfigManager
 import com.example.musicplayer.viewmodel.AudioRecorder
 import com.example.musicplayer.viewmodel.ChatCompletionHelper
@@ -20,6 +22,11 @@ class HiltModule {
     @Provides
     @Singleton
     fun provideAudioRecorder(@ApplicationContext context: Context) = AudioRecorder(context)
+
+    @Provides
+    @Singleton
+    fun provideMusicManager(@ApplicationContext context: Context) : MusicManager= SpotifyManager(context)
+
 }
 
 @Module

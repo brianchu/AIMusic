@@ -4,13 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.musicplayer.data.AppConstants
-import com.example.musicplayer.data.ChatCompletionRequest
-import com.example.musicplayer.data.ChatMessage
-import com.example.musicplayer.data.services.ChatCompletionApi
+import com.example.musicplayer.data.MusicManager
 import com.example.musicplayer.data.services.WhisperApi
 import com.example.musicplayer.data.services.WhisperApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,7 +31,7 @@ data class VoiceUiState(
 class VoiceViewModel @Inject constructor(
     private val audioRecorder: AudioRecorder,
     private val chatCompletionHelper: ChatCompletionHelper,
-    private val appleMusicManager: AppleMusicManager
+    private val musicManager: MusicManager
 ) : ViewModel() {
 
     private val whisperApi = WhisperApiService.retrofit.create(WhisperApi::class.java)
@@ -44,7 +41,7 @@ class VoiceViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _uiState.update { it.copy(isAuthenticated = appleMusicManager.isAuthorized()) }
+            _uiState.update { it.copy(isAuthenticated = musicManager.isAuthorized()) }
         }
     }
 
@@ -113,9 +110,9 @@ class VoiceViewModel @Inject constructor(
 
         viewModelScope.launch {
             when (actionItem.lowercase(Locale.getDefault())) {
-                "play" -> appleMusicManager.play()
-                "pause" -> appleMusicManager.pause()
-                "stop" -> appleMusicManager.stop()
+                "play" -> musicManager.play()
+                "pause" -> musicManager.pause()
+                "stop" -> musicManager.stop()
                 else -> Log.d(TAG, "Unknown action item: $actionItem")
             }
         }
@@ -131,7 +128,7 @@ class VoiceViewModel @Inject constructor(
 
     fun authenticateAppleMusic() {
         viewModelScope.launch {
-            val isAuthenticated = appleMusicManager.authenticate()
+            val isAuthenticated = musicManager.authenticate()
             _uiState.update { it.copy(isAuthenticated = isAuthenticated) }
         }
     }
