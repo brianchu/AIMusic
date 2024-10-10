@@ -19,13 +19,8 @@
         android:theme="@style/Theme.MusicPlayer"
         tools:targetApi="31">
         <activity
-            android:name="com.apple.android.sdk.authentication.SDKUriHandlerActivity"
-            android:exported="true"
-            tools:node="merge" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.MusicPlayer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,12 +29,6 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="com.apple.developer.music-kit-team-id"
-            android:value="YOUR_TEAM_ID" />
-        <meta-data
-            android:name="com.apple.developer.music-kit-service-id"
-            android:value="YOUR_SERVICE_ID" />
     </application>
 
 </manifest>
